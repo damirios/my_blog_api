@@ -1,28 +1,29 @@
 const express = require('express');
-const { post_list, post_create, post_single, post_udpate, post_moderate, post_delete } = require('../controllers/post_controller');
+const { comment_list, comment_create, comment_update, comment_moderate, comment_delete } = require('../controllers/comment_controller');
+const { post_list, post_create, post_single, post_update, post_moderate, post_delete } = require('../controllers/post_controller');
 
 const router = express.Router();
 
+// POST
 router.get('/', post_list);
 router.get('/:id', post_single);
+router.get('/:id/moderate', post_moderate);
 
 router.post('/', post_create);
-router.post('/:id/moderate', post_moderate);
 
-router.put('/:id', post_udpate);
+router.put('/:id', post_update);
 
 router.delete('/:id', post_delete);
 
-// router.post('/create', user_create);
-// router.post('/:id/admin', user_become_admin);
+// COMMENT
+router.get('/:postId/comment', comment_list);
+router.get('/:postId/comment/:id/moderate', comment_moderate);
+// router.get('/:id', post_single);
 
-// router.put('/:id/first', user_update_first_name);
-// router.put('/:id/last', user_update_last_name);
-// router.put('/:id/login', user_update_login);
-// router.put('/:id/password', user_update_password);
-// router.put('/:id/avatar', user_update_avatar);
+router.post('/:postId/comment', comment_create);
 
-// router.delete('/:id', user_delete);
+router.put('/:postId/comment/:id', comment_update);
 
+router.delete('/:postId/comment/id', comment_delete);
 
 module.exports = router;

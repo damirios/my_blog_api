@@ -3,7 +3,7 @@ const Post = require('../models/post');
 const {body, validationResult} = require('express-validator');
 const getFormattedDate = require('../utilities/getFormattedDate');
 
-exports.post_list = async (req, res) => {
+exports.post_list = async (req, res, next) => {
     const posts = await Post.find({});
 
     if (posts.length === 0) {
@@ -13,7 +13,7 @@ exports.post_list = async (req, res) => {
     res.json(posts);
 };
 
-exports.post_single = async (req, res) => {
+exports.post_single = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
@@ -58,7 +58,7 @@ exports.post_create = [
     }
 ];
 
-exports.post_udpate = [
+exports.post_update = [
     body("title", "Введите название поста (макс. 64 символа)")
         .trim()
         .isLength({min: 1, max: 64})
@@ -93,7 +93,7 @@ exports.post_udpate = [
     }
 ];
 
-exports.post_moderate = async (req, res) => {
+exports.post_moderate = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
@@ -104,7 +104,7 @@ exports.post_moderate = async (req, res) => {
     res.redirect(moderatedPost.url);
 };
 
-exports.post_delete = async (req, res) => {
+exports.post_delete = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
