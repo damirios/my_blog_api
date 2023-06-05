@@ -1,10 +1,11 @@
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 
 const {body, validationResult} = require('express-validator');
 const getFormattedDate = require('../utilities/getFormattedDate');
 
 exports.post_list = async (req, res, next) => {
-    const posts = await Post.find({});
+    const posts = await Post.find({}).populate("author").populate('comments').exec();
 
     if (posts.length === 0) {
         throw new Error("Постов пока нет(");
@@ -14,13 +15,14 @@ exports.post_list = async (req, res, next) => {
 };
 
 exports.post_single = async (req, res, next) => {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate('author').exec();
+    const comments = await Comment.find({post: post._id}).populate('author').exec();
 
     if (!post) {
         throw new Error("Пост с таким id не найден");
     }
 
-    res.json(post);
+    res.json({post, comments});
 }
 
 exports.post_create = [

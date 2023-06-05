@@ -6,7 +6,7 @@ const PostSchema = new Schema({
     image: {type: String, required: true},
     text: {type: String, required: true},
     publicationDate: {type: String, required: true},
-    author: {type: Schema.Types.ObjectId, required: true},
+    author: {type: Schema.Types.ObjectId, ref: "User", required: true},
     isModerated: {type: Boolean, required: true, default: false},
     isEdited: {type: Boolean, default: false},
     editDate: {type: String},
