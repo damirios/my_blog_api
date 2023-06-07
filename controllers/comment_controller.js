@@ -52,8 +52,8 @@ exports.comment_create = [
         post.comments = [...post.comments, comment.id];
         await post.save();
 
-        // res.redirect(post.url);
-        res.json(comment);
+        res.status(200);
+        res.redirect('http://localhost:3000' + post.url);
 }];
 
 exports.comment_update = [

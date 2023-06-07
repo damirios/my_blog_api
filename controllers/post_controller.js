@@ -17,12 +17,13 @@ exports.post_list = async (req, res, next) => {
 exports.post_single = async (req, res, next) => {
     const post = await Post.findById(req.params.id).populate('author').exec();
     const comments = await Comment.find({post: post._id}).populate('author').exec();
+    const moderatedComments = comments.filter(comment => comment.isModerated);
 
     if (!post) {
         throw new Error("Пост с таким id не найден");
     }
 
-    res.json({post, comments});
+    res.json({post, comments: moderatedComments});
 }
 
 exports.post_create = [
